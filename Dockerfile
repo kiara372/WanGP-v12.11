@@ -25,9 +25,11 @@ RUN pip install -r requirements.txt
 # 4. Install SageAttention (optimized for WanGP)
 ENV TORCH_CUDA_ARCH_LIST="${CUDA_ARCHITECTURES}"
 ENV FORCE_CUDA="1"
-RUN git clone https://github.com/thu-ml/SageAttention.git /tmp/sageattention && \
+# We use --no-build-isolation because SageAttention needs the installed torch to detect CUDA
+RUN pip install packaging && \
+    git clone https://github.com/thu-ml/SageAttention.git /tmp/sageattention && \
     cd /tmp/sageattention && \
-    pip install . && \
+    pip install --no-build-isolation . && \
     rm -rf /tmp/sageattention
 
 # 5. Setup User
